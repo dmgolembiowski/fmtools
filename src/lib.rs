@@ -19,8 +19,8 @@ See [fmt!] for more information.
 
 use core::fmt as core_fmt;
 
-mod template;
 mod prelude;
+mod template;
 
 mod join;
 pub use self::join::*;
@@ -34,17 +34,17 @@ pub use self::join::*;
 #[derive(Copy, Clone)]
 #[repr(transparent)]
 pub struct fmt<F: Fn(&mut core_fmt::Formatter) -> core_fmt::Result> {
-	closure: F,
+    closure: F,
 }
 impl<F: Fn(&mut core_fmt::Formatter) -> core_fmt::Result> core_fmt::Display for fmt<F> {
-	fn fmt(&self, f: &mut core_fmt::Formatter) -> core_fmt::Result {
-		(self.closure)(f)
-	}
+    fn fmt(&self, f: &mut core_fmt::Formatter) -> core_fmt::Result {
+        (self.closure)(f)
+    }
 }
 impl<F: Fn(&mut core_fmt::Formatter) -> core_fmt::Result> core_fmt::Debug for fmt<F> {
-	fn fmt(&self, f: &mut core_fmt::Formatter) -> core_fmt::Result {
-		(self.closure)(f)
-	}
+    fn fmt(&self, f: &mut core_fmt::Formatter) -> core_fmt::Result {
+        (self.closure)(f)
+    }
 }
 
 /// Returns a displayable object using the closure argument as its implementation.
@@ -65,18 +65,23 @@ impl<F: Fn(&mut core_fmt::Formatter) -> core_fmt::Result> core_fmt::Debug for fm
 /// // Prints `Hello world!`
 /// ```
 pub fn fmt<F: Fn(&mut core_fmt::Formatter) -> core_fmt::Result>(closure: F) -> fmt<F> {
-	fmt { closure }
+    fmt { closure }
 }
 
 #[cfg(feature = "obfstr")]
 #[doc(hidden)]
-pub use obfstr::obfstr;
+pub use obfstr::{
+    __random_cast as random_cast, bytes, cfo, entropy, hash, murmur3, obfstr, random, splitmix,
+    unsafe_as_str, wide, words, xref, SEED,
+};
 
 #[cfg(not(feature = "obfstr"))]
 #[doc(hidden)]
 #[macro_export]
 macro_rules! obfstr {
-	($s:expr) => { $s };
+    ($s:expr) => {
+        $s
+    };
 }
 
 #[cfg(doc)]

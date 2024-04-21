@@ -23,7 +23,7 @@ In your Cargo.toml, add:
 
 ```text
 [dependencies]
-fmtools = "0.1"
+fmtools = { git = "https://github.com/dmgolembiowski/fmtools.git" }
 ```
 
 Examples
@@ -158,6 +158,16 @@ fn escape_hatch() -> String {
 }
 
 assert_eq!(escape_hatch(), "Now entering [escape hatch]");
+```
+
+### String obfuscation
+
+A build-time environment variable is needed to seed the RNG used by the obfuscation hash.
+By default the behavior is equivalent to `export OBFSTR_SEED="FIXED"`, thus it is encouraged to 
+incorporate a mechanism for gathering a secure obfuscation seed in `/build.rs`. 
+
+```sh 
+OBFSTR_SEED="semivulcanized-leighann0432" cargo build --release
 ```
 
 Closure syntax provides an escape hatch to inject code if needed.
